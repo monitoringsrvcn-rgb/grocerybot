@@ -1,0 +1,96 @@
+{
+  "shop_name": "ហាងរបស់ខ្ញុំ",
+  "categories": {
+    "📱 ទូរស័ព្ទ": [
+      {
+        "name": "iPhone 15 Pro",
+        "price": 1199,
+        "description": "6.1 inch, A17 Pro chip, 256GB, ពណ៌ Titanium",
+        "stock": 5
+      },
+      {
+        "name": "iPhone 15",
+        "price": 799,
+        "description": "6.1 inch, A16 chip, 128GB",
+        "stock": 10
+      },
+      {
+        "name": "Samsung Galaxy S24",
+        "price": 899,
+        "description": "6.2 inch, Snapdragon 8 Gen 3, 256GB",
+        "stock": 7
+      },
+      {
+        "name": "Samsung Galaxy A55",
+        "price": 449,
+        "description": "6.6 inch, Exynos 1480, 128GB",
+        "stock": 15
+      }
+    ],
+    "💻 កុំព្យូទ័រ": [
+      {
+        "name": "MacBook Air M3",
+        "price": 1299,
+        "description": "13 inch, Apple M3, 8GB RAM, 256GB SSD",
+        "stock": 3
+      },
+      {
+        "name": "Dell XPS 13",
+        "price": 999,
+        "description": "13 inch, Intel Core i7, 16GB RAM, 512GB SSD",
+        "stock": 4
+      },
+      {
+        "name": "Lenovo IdeaPad 3",
+        "price": 549,
+        "description": "15 inch, Intel Core i5, 8GB RAM, 256GB SSD",
+        "stock": 8
+      }
+    ],
+    "🎧 គ្រឿងបន្លាស់": [
+      {
+        "name": "AirPods Pro 2nd Gen",
+        "price": 249,
+        "description": "Noise Cancelling, MagSafe Charging Case",
+        "stock": 20
+      },
+      {
+        "name": "Sony WH-1000XM5",
+        "price": 349,
+        "description": "Wireless Headphones, 30h battery, Noise Cancelling",
+        "stock": 6
+      },
+      {
+        "name": "Anker PowerBank 20000mAh",
+        "price": 45,
+        "description": "Fast Charge, USB-C & USB-A",
+        "stock": 30
+      },
+      {
+        "name": "Phone Case iPhone 15",
+        "price": 15,
+        "description": "TPU Case, Military Grade Protection",
+        "stock": 50
+      }
+    ],
+    "📺 TV & Sound": [
+      {
+        "name": "Samsung 55\" 4K Smart TV",
+        "price": 699,
+        "description": "55 inch, 4K QLED, HDR10+, Smart TV",
+        "stock": 2
+      },
+      {
+        "name": "Sony Soundbar HT-S400",
+        "price": 299,
+        "description": "2.1ch, 330W, Bluetooth, HDMI ARC",
+        "stock": 4
+      }
+    ]
+  },
+  "contact": {
+    "telegram": "@YourShopUsername",
+    "phone": "012 345 678",
+    "address": "ភ្នំពេញ, កម្ពុជា"
+  }
+}
