@@ -192,29 +192,6 @@ body{font-family:'Kantumruy Pro',sans-serif;background:var(--bg);color:var(--tex
 
 /* NEW TIER ROWS in add form */
 .new-tiers-wrap{background:#fafafa;border-radius:12px;padding:10px 12px;}
-
-/* LOGIN MODAL */
-.login-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(5px);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.login-overlay.open { display: flex; }
-.login-card {
-  background: white;
-  width: 100%;
-  max-width: 320px;
-  padding: 24px;
-  border-radius: 20px;
-  text-align: center;
-}
-.login-card h2 { margin-bottom: 20px; font-size: 20px; }
 </style>
 </head>
 <body>
@@ -229,7 +206,7 @@ body{font-family:'Kantumruy Pro',sans-serif;background:var(--bg);color:var(--tex
     </div>
   </div>
   <div class="header-info">
-    <div class="badge">⏰ 7AM–10PM</div>
+    <div class="badge">⏰ 6AM–10PM</div>
     <div class="badge">📞 067 785 544</div>
     <div class="badge">✅ រៀងរាល់ថ្ងៃ</div>
   </div>
@@ -356,27 +333,11 @@ body{font-family:'Kantumruy Pro',sans-serif;background:var(--bg);color:var(--tex
   </div>
 </div>
 
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <h2>🔐 Admin Login</h2>
-    <div class="form-group">
-      <label class="form-label">Username</label>
-      <input type="text" id="adminUser" class="form-input" placeholder="Enter username">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input type="password" id="adminPass" class="form-input" placeholder="Enter password">
-    </div>
-    <button class="save-btn" onclick="checkLogin()">Login</button>
-    <button class="add-tier-btn" style="margin-top:10px; border:none;" onclick="closeLogin()">Cancel</button>
-  </div>
-</div>
-
 <div id="hiddenInputs"></div>
 
 <script>
-// ===== DATA =====
-let products = [
+// ===== DATA & PERSISTENCE =====
+const INITIAL_PRODUCTS = [
   {id:1,name:'Angkor Beer',desc:'ស្រាបៀរក្នុងស្រុក',icon:'🍺',cat:'drink',badge:'ពេញនិយម',img:null,
    tiers:[{unit:'ដប',price:6000},{unit:'កេស(24ដប)',price:102000}]},
   {id:2,name:'Tiger Beer',desc:'ស្រាបៀរ Singapore',icon:'🐯',cat:'drink',img:null,
@@ -411,44 +372,16 @@ let products = [
    tiers:[{unit:'ថង់',price:4500},{unit:'ប្រអប់(12)',price:48000}]},
 ];
 
-let nextId=17, cart={}, currentCat='all', searchQuery='', newImgData=null;
+let products = JSON.parse(localStorage.getItem('myProducts')) || INITIAL_PRODUCTS;
+
+function saveToStorage() {
+  localStorage.setItem('myProducts', JSON.stringify(products));
+}
+
+let nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 17;
+let cart={}, currentCat='all', searchQuery='', newImgData=null;
 const catLabels={drink:'ភេសជ្ជៈ',snack:'អាហារសម្រន់',milk:'ទឹកដោះគោ',baby:'កូនក្មេង',supply:'សម្ភារៈ'};
 const catIcons={drink:'🍺',snack:'🍟',milk:'🍼',baby:'👶',supply:'🧴'};
-
-// ===== AUTHENTICATION =====
-let isAdminAuthenticated = false;
-
-function openAdmin() {
-  if (isAdminAuthenticated) {
-    showAdminPanel();
-  } else {
-    document.getElementById('loginOverlay').classList.add('open');
-  }
-}
-
-function closeLogin() {
-  document.getElementById('loginOverlay').classList.remove('open');
-}
-
-function checkLogin() {
-  const user = document.getElementById('adminUser').value;
-  const pass = document.getElementById('adminPass').value;
-
-  if (user === 'admin' && pass === '0123456789') {
-    isAdminAuthenticated = true;
-    closeLogin();
-    showAdminPanel();
-    showToast('🔓 ចូលក្នុងប្រព័ន្ធជោគជ័យ');
-  } else {
-    showToast('❌ ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវ');
-  }
-}
-
-function showAdminPanel() {
-  renderAdminList();
-  initNewTiers();
-  document.getElementById('adminOverlay').classList.add('open');
-}
 
 // ===== RENDER PRODUCTS =====
 function renderProducts(){
@@ -559,6 +492,7 @@ function showPage(page){
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 // ===== ADMIN =====
+function openAdmin(){renderAdminList();initNewTiers();document.getElementById('adminOverlay').classList.add('open');}
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
 function switchTab(tab,el){
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');
@@ -647,6 +581,8 @@ function saveTiers(pid){
   });
   if(!valid){showToast('❌ សូមបំពេញឈ្មោះ និងតម្លៃឱ្យពេញ!');return;}
   p.tiers=newTiers;
+  // update storage
+  saveToStorage();
   // update cart entries
   Object.keys(cart).forEach(k=>{
     if(k.startsWith(`${pid}-`)){const ti=parseInt(k.split('-')[1]);if(p.tiers[ti]){cart[k].price=p.tiers[ti].price;cart[k].unit=p.tiers[ti].unit;}}
@@ -660,6 +596,8 @@ function saveTiers(pid){
 function deleteProduct(id){
   if(!confirm('លុបទំនិញនេះ?'))return;
   products=products.filter(p=>p.id!==id);
+  // update storage
+  saveToStorage();
   Object.keys(cart).forEach(k=>{if(k.startsWith(`${id}-`))delete cart[k];});
   updateCartCount();
   renderAdminList();
@@ -675,6 +613,7 @@ function handleUpload(event,id){
   reader.onload=e=>{
     const p=products.find(x=>x.id===id);if(!p)return;
     p.img=e.target.result;
+    saveToStorage();
     Object.keys(cart).forEach(k=>{if(k.startsWith(`${id}-`))cart[k].img=e.target.result;});
     renderAdminList();renderProducts();showToast(`✅ រូបភាព "${p.name}" បានដាក់!`);
   };
@@ -724,7 +663,13 @@ function addNewProduct(){
     if(u&&pr>0)tiers.push({unit:u,price:pr});
   }
   if(!tiers.length){showToast('❌ សូមដាក់តម្លៃយ៉ាងហោចណាស់ 1!');return;}
-  products.push({id:nextId++,name,desc:desc||name,cat,icon:catIcons[cat]||'🛒',badge:badge||undefined,img:newImgData,tiers});
+  
+  const newObj = {id:nextId++,name,desc:desc||name,cat,icon:catIcons[cat]||'🛒',badge:badge||undefined,img:newImgData,tiers};
+  products.push(newObj);
+  
+  // Save permanently
+  saveToStorage();
+  
   renderProducts();
   document.getElementById('newName').value='';
   document.getElementById('newDesc').value='';
