@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ផ្ទះចាប់ហួយ អ៊ីចន្ថា</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#e8390e;--primary-dark:#c22d0a;--accent:#ffc107;--bg:#fff8f5;--text:#1a1a1a;--muted:#888;--border:#f0e0d8;--shadow:0 4px 20px rgba(232,57,14,0.10);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Kantumruy Pro',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,var(--primary) 0%,#ff6b35 100%);color:white;padding:20px 16px 24px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.08);}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative;z-index:1;}
+.logo{width:52px;height:52px;background:white;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 12px rgba(0,0,0,0.15);overflow:hidden;}
+.logo img{width:100%;height:100%;object-fit:cover;}
+.shop-name{font-size:18px;font-weight:700;line-height:1.3;}
+.shop-sub{font-size:12px;opacity:.85;margin-top:2px;}
+.header-info{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1;margin-top:6px;}
+.badge{background:rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;font-size:11px;display:flex;align-items:center;gap:4px;}
+.admin-btn{position:absolute;top:16px;right:16px;z-index:2;background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);color:white;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+/* SEARCH */
+.search-wrap{padding:14px 16px 4px;}
+.search-box{display:flex;align-items:center;background:white;border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;gap:8px;box-shadow:var(--shadow);}
+.search-box input{border:none;outline:none;font-family:inherit;font-size:14px;flex:1;background:transparent;color:var(--text);}
+
+/* CATEGORIES */
+.section-title{font-size:15px;font-weight:700;padding:14px 16px 8px;}
+.categories{display:flex;gap:8px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none;}
+.categories::-webkit-scrollbar{display:none;}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:white;border:2px solid var(--border);border-radius:14px;padding:10px 14px;cursor:pointer;white-space:nowrap;font-family:inherit;font-size:11px;font-weight:600;color:var(--muted);transition:all .2s;min-width:68px;}
+.cat-btn .cat-icon{font-size:22px;}
+.cat-btn.active,.cat-btn:hover{border-color:var(--primary);color:var(--primary);background:#fff0ec;transform:translateY(-2px);box-shadow:0 4px 12px rgba(232,57,14,0.15);}
+
+/* PROMO */
+.promo-banner{margin:12px 16px;background:linear-gradient(135deg,#ffc107,#ff9800);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(255,193,7,0.3);}
+.promo-text h3{font-size:15px;font-weight:700;color:#1a1a1a;}
+.promo-text p{font-size:12px;color:#1a1a1a;opacity:.8;margin-top:2px;}
+.promo-emoji{font-size:36px;}
+
+/* PRODUCT GRID */
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;}
+.product-card{background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1.5px solid var(--border);transition:transform .2s,box-shadow .2s;cursor:pointer;}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(232,57,14,0.15);}
+.product-img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,#fff0ec,#ffe8e0);position:relative;overflow:hidden;}
+.product-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.product-img .emoji-fb{z-index:1;}
+.badge-new{position:absolute;top:8px;left:8px;z-index:2;background:var(--primary);color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.badge-sale{position:absolute;top:8px;left:8px;z-index:2;background:var(--accent);color:#1a1a1a;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.product-info{padding:10px 12px 12px;}
+.product-name{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:4px;}
+.product-desc{font-size:11px;color:var(--muted);margin-bottom:6px;}
+
+/* PRICE TIERS on card */
+.price-tiers{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;}
+.price-tier-row{display:flex;justify-content:space-between;align-items:center;}
+.tier-unit{font-size:10px;color:var(--muted);}
+.tier-price{font-size:12px;font-weight:700;color:var(--primary);}
+.tier-price.main{font-size:14px;}
+
+.product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+.add-btn{width:28px;height:28px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .1s;font-family:inherit;}
+.add-btn:hover{background:var(--primary-dark);transform:scale(1.1);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);display:flex;box-shadow:0 -4px 20px rgba(0,0,0,0.08);z-index:100;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;cursor:pointer;border:none;background:transparent;font-family:inherit;font-size:10px;color:var(--muted);gap:3px;transition:color .2s;}
+.nav-btn .nav-icon{font-size:20px;}
+.nav-btn.active{color:var(--primary);}
+.cart-wrap{position:relative;display:inline-block;}
+.cart-count{position:absolute;top:-6px;right:-8px;background:var(--primary);color:white;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+
+/* CART PANEL */
+.cart-panel{position:fixed;bottom:0;left:0;right:0;background:white;border-radius:24px 24px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,0.15);z-index:200;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:80vh;overflow-y:auto;}
+.cart-panel.open{transform:translateY(0);}
+.panel-handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:12px auto 0;}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
+.panel-header h2{font-size:16px;font-weight:700;}
+.close-btn{background:#f5f5f5;border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;}
+.cart-items{padding:12px 20px;}
+.cart-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5;}
+.cart-item-thumb{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fff0ec,#ffe8e0);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0;}
+.cart-item-thumb img{width:100%;height:100%;object-fit:cover;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:13px;font-weight:600;}
+.cart-item-unit{font-size:10px;color:var(--muted);margin-top:1px;}
+.cart-item-price{font-size:12px;color:var(--primary);margin-top:2px;}
+.qty-ctrl{display:flex;align-items:center;gap:8px;}
+.qty-btn{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--border);background:white;font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;}
+.qty-num{font-size:14px;font-weight:700;min-width:20px;text-align:center;}
+.cart-footer{padding:16px 20px 30px;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.cart-total span{font-size:15px;font-weight:700;}
+.total-price{font-size:18px;color:var(--primary);}
+.order-btn{width:100%;background:var(--primary);color:white;border:none;border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+.order-btn:hover{background:var(--primary-dark);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;}
+.overlay.show{display:block;}
+.empty-cart{text-align:center;padding:30px;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:10px;}
+
+/* UNIT SELECTOR MODAL */
+.unit-modal{position:fixed;bottom:0;left:0;right:0;background:white;border-radius:24px 24px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,0.2);z-index:300;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding-bottom:30px;}
+.unit-modal.open{transform:translateY(0);}
+.unit-modal-title{font-size:15px;font-weight:700;padding:16px 20px 12px;}
+.unit-option{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid #f5f5f5;cursor:pointer;transition:background .15s;}
+.unit-option:hover{background:#fff0ec;}
+.unit-option-left{display:flex;flex-direction:column;gap:3px;}
+.unit-option-name{font-size:14px;font-weight:600;}
+.unit-option-desc{font-size:11px;color:var(--muted);}
+.unit-option-price{font-size:16px;font-weight:700;color:var(--primary);}
+
+/* CONTACT */
+.contact-page{padding:16px;}
+.contact-card{background:white;border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1.5px solid var(--border);margin-bottom:14px;}
+.contact-card h3{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--primary);}
+.contact-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5;}
+.contact-item:last-child{border-bottom:none;}
+.contact-item-icon{font-size:24px;}
+.contact-item-info{flex:1;}
+.contact-item-label{font-size:11px;color:var(--muted);}
+.contact-item-value{font-size:14px;font-weight:600;margin-top:1px;}
+.call-btn{background:var(--primary);color:white;border:none;border-radius:10px;padding:8px 14px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;}
+
+.page.hidden{display:none;}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1a1a1a;color:white;padding:10px 20px;border-radius:20px;font-size:13px;z-index:999;transition:transform .3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ===== ADMIN PANEL ===== */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;display:none;align-items:flex-end;}
+.admin-overlay.open{display:flex;}
+.admin-panel{background:white;border-radius:24px 24px 0 0;width:100%;max-height:93vh;overflow-y:auto;padding-bottom:30px;}
+.admin-tabs{display:flex;padding:12px 20px 0;border-bottom:1px solid var(--border);}
+.admin-tab{flex:1;text-align:center;padding:10px;font-family:inherit;font-size:12px;font-weight:600;border:none;background:transparent;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;}
+.admin-tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+.info-bar{padding:10px 20px 4px;font-size:12px;color:var(--muted);background:#fafafa;border-bottom:1px solid var(--border);}
+
+/* ADMIN PRODUCT LIST */
+.admin-product-list{padding:8px 20px;}
+.admin-product-item{padding:12px 0;border-bottom:1px solid #f5f5f5;}
+.admin-product-item:last-child{border-bottom:none;}
+.admin-product-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.admin-thumb{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff0ec,#ffe8e0);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;overflow:hidden;border:1.5px solid var(--border);cursor:pointer;position:relative;}
+.admin-thumb img{width:100%;height:100%;object-fit:cover;}
+.admin-thumb .upload-hint{position:absolute;inset:0;background:rgba(232,57,14,0.8);color:white;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;border-radius:10px;text-align:center;line-height:1.3;}
+.admin-thumb:hover .upload-hint{display:flex;}
+.admin-product-info{flex:1;}
+.admin-product-name{font-size:14px;font-weight:700;}
+.admin-product-cat{font-size:10px;color:var(--muted);margin-top:2px;}
+.admin-actions{display:flex;gap:6px;}
+.btn-sm{padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--text);white-space:nowrap;}
+.btn-sm.primary{background:var(--primary);color:white;border-color:var(--primary);}
+.btn-sm.danger{background:#fff0ec;color:var(--primary);border-color:var(--border);}
+
+/* PRICE TIER EDITOR */
+.price-tiers-editor{background:#fafafa;border-radius:12px;padding:10px 12px;margin-top:4px;}
+.tier-editor-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.tier-editor-row:last-child{margin-bottom:0;}
+.tier-input-unit{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:inherit;font-size:13px;outline:none;background:white;}
+.tier-input-unit:focus{border-color:var(--primary);}
+.tier-input-price{flex:1.2;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:inherit;font-size:13px;outline:none;background:white;}
+.tier-input-price:focus{border-color:var(--primary);}
+.tier-del-btn{width:28px;height:28px;border-radius:8px;border:1.5px solid #fcc;background:#fff0ec;color:var(--primary);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.add-tier-btn{width:100%;border:1.5px dashed var(--border);border-radius:8px;padding:7px;background:white;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-top:4px;}
+.add-tier-btn:hover{border-color:var(--primary);color:var(--primary);}
+.tier-labels{display:flex;gap:8px;margin-bottom:6px;}
+.tier-label{flex:1;font-size:10px;font-weight:700;color:var(--muted);padding-left:2px;}
+.tier-label:last-child{flex:1.2;}
+.save-tier-btn{margin-top:8px;width:100%;background:var(--primary);color:white;border:none;border-radius:8px;padding:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;}
+
+/* ADD PRODUCT */
+.add-product-form{padding:16px 20px;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block;}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:14px;outline:none;background:white;color:var(--text);transition:border-color .2s;}
+.form-input:focus{border-color:var(--primary);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:14px;outline:none;background:white;color:var(--text);}
+.img-upload-zone{border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;}
+.img-upload-zone:hover{border-color:var(--primary);background:#fff0ec;}
+.zone-icon{font-size:32px;margin-bottom:6px;}
+.zone-text p{font-size:13px;color:var(--muted);}
+.zone-text p:last-child{font-size:11px;margin-top:4px;}
+.zone-preview{width:100%;height:130px;object-fit:cover;border-radius:10px;display:none;}
+.save-btn{width:100%;background:var(--primary);color:white;border:none;border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.save-btn:hover{background:var(--primary-dark);}
+.hidden-input{display:none;}
+.has-img-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;display:inline-block;margin-left:5px;vertical-align:middle;}
+
+/* NEW TIER ROWS in add form */
+.new-tiers-wrap{background:#fafafa;border-radius:12px;padding:10px 12px;}
+
+/* LOGIN MODAL */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.login-overlay.open { display: flex; }
+.login-card {
+  background: white;
+  width: 100%;
+  max-width: 320px;
+  padding: 24px;
+  border-radius: 20px;
+  text-align: center;
+}
+.login-card h2 { margin-bottom: 20px; font-size: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="admin-btn" onclick="openAdmin()">⚙️ Admin</button>
+  <div class="header-top">
+    <div class="logo">🏪</div>
+    <div>
+      <div class="shop-name">ផ្ទះចាប់ហួយ អ៊ីចន្ថា</div>
+      <div class="shop-sub">Mini Mart • គ្រប់មុខទំនិញ</div>
+    </div>
+  </div>
+  <div class="header-info">
+    <div class="badge">⏰ 6AM–10PM</div>
+    <div class="badge">📞 067 785 544</div>
+    <div class="badge">✅ រៀងរាល់ថ្ងៃ</div>
+  </div>
+</div>
+
+<div class="page" id="page-home">
+  <div class="search-wrap">
+    <div class="search-box">
+      <span style="color:var(--primary);font-size:16px">🔍</span>
+      <input type="text" placeholder="ស្វែងរកទំនិញ..." id="searchInput" oninput="filterProducts()">
+    </div>
+  </div>
+  <div class="section-title">ប្រភេទទំនិញ</div>
+  <div class="categories">
+    <button class="cat-btn active" onclick="filterCat('all',this)"><span class="cat-icon">🛒</span>ទាំងអស់</button>
+    <button class="cat-btn" onclick="filterCat('drink',this)"><span class="cat-icon">🍺</span>ភេសជ្ជៈ</button>
+    <button class="cat-btn" onclick="filterCat('snack',this)"><span class="cat-icon">🍟</span>សម្រន់</button>
+    <button class="cat-btn" onclick="filterCat('milk',this)"><span class="cat-icon">🍼</span>ទឹកដោះគោ</button>
+    <button class="cat-btn" onclick="filterCat('baby',this)"><span class="cat-icon">👶</span>កូនក្មេង</button>
+    <button class="cat-btn" onclick="filterCat('supply',this)"><span class="cat-icon">🧴</span>សម្ភារៈ</button>
+  </div>
+  <div class="promo-banner">
+    <div class="promo-text"><h3>⚡ Flash Sale ថ្ងៃនេះ!</h3><p>បញ្ចុះតម្លៃ 10–20% លើទំនិញជ្រើស</p></div>
+    <div class="promo-emoji">🎉</div>
+  </div>
+  <div class="section-title">ទំនិញទាំងអស់</div>
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<div class="page hidden" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-card">
+      <h3>📞 ទំនាក់ទំនងហាង</h3>
+      <div class="contact-item"><div class="contact-item-icon">📱</div><div class="contact-item-info"><div class="contact-item-label">លេខទូរស័ព្ទ</div><div class="contact-item-value">067 785 544</div></div><button class="call-btn" onclick="window.location='tel:067785544'">ទូរស័ព្ទ</button></div>
+      <div class="contact-item"><div class="contact-item-icon">⏰</div><div class="contact-item-info"><div class="contact-item-label">ម៉ោងបម្រើ</div><div class="contact-item-value">6:00AM – 10:00PM រៀងរាល់ថ្ងៃ</div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">📦</div><div class="contact-item-info"><div class="contact-item-label">ការដឹកជញ្ជូន</div><div class="contact-item-value">ដឹកដល់ផ្ទះ • កម្មង់តាម Telegram</div></div></div>
+    </div>
+    <div class="contact-card">
+      <h3>💰 វិធីទូទាត់</h3>
+      <div class="contact-item"><div class="contact-item-icon">🏦</div><div class="contact-item-info"><div class="contact-item-label">ធនាគារ</div><div class="contact-item-value">ABA / ACLEDA</div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">📲</div><div class="contact-item-info"><div class="contact-item-label">Mobile Payment</div><div class="contact-item-value">Wing / TrueMoney / Pi Pay</div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">💵</div><div class="contact-item-info"><div class="contact-item-label">សាច់ប្រាក់</div><div class="contact-item-value">Cash on Delivery (COD)</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="showPage('home')"><span class="nav-icon">🏠</span>ទំព័រដើម</button>
+  <button class="nav-btn" id="nav-cart" onclick="openCart()"><span class="cart-wrap"><span class="nav-icon">🛒</span><span class="cart-count" id="cartCount" style="display:none">0</span></span>រទេះ</button>
+  <button class="nav-btn" id="nav-contact" onclick="showPage('contact')"><span class="nav-icon">📞</span>ទំនាក់ទំនង</button>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="panel-handle"></div>
+  <div class="panel-header"><h2>🛒 រទេះទំនិញ</h2><button class="close-btn" onclick="closeCart()">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter"></div>
+</div>
+
+<div class="unit-modal" id="unitModal">
+  <div class="panel-handle"></div>
+  <div class="unit-modal-title" id="unitModalTitle">ជ្រើសរើសប្រភេទ</div>
+  <div id="unitOptions"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="panel-handle"></div>
+    <div class="panel-header"><h2>⚙️ Admin Panel</h2><button class="close-btn" onclick="closeAdmin()">✕</button></div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('prices',this)">💰 កែតម្លៃ & រូប</button>
+      <button class="admin-tab" onclick="switchTab('add',this)">➕ បន្ថែមទំនិញ</button>
+    </div>
+    <div id="tabPrices">
+      <div class="info-bar">💡 ចុច <b>✏️ កែតម្លៃ</b> ដើម្បីដាក់/កែប្រែតម្លៃ និង📷ដើម្បី Upload រូប</div>
+      <div class="admin-product-list" id="adminProductList"></div>
+    </div>
+    <div id="tabAdd" style="display:none">
+      <div class="add-product-form">
+        <div class="form-group"><label class="form-label">ឈ្មោះទំនិញ *</label><input class="form-input" type="text" id="newName" placeholder="ឧ. Angkor Beer"></div>
+        <div class="form-group"><label class="form-label">ពិពណ៌នា</label><input class="form-input" type="text" id="newDesc" placeholder="ឧ. ស្រាបៀរក្នុងស្រុក"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">ប្រភេទ *</label>
+            <select class="form-select" id="newCat">
+              <option value="drink">🍺 ភេសជ្ជៈ</option>
+              <option value="snack">🍟 អាហារសម្រន់</option>
+              <option value="milk">🍼 ទឹកដោះគោ</option>
+              <option value="baby">👶 កូនក្មេង</option>
+              <option value="supply">🧴 សម្ភារៈ</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Badge</label>
+            <select class="form-select" id="newBadge">
+              <option value="">គ្មាន</option>
+              <option value="ថ្មី">🆕 ថ្មី</option>
+              <option value="sale">🏷️ SALE</option>
+              <option value="ពេញនិយម">🔥 ពេញនិយម</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">តម្លៃ (ដាក់បានច្រើនប្រភេទ) *</label>
+          <div class="new-tiers-wrap">
+            <div class="tier-labels"><span class="tier-label">ប្រភេទ (ដប/កេស...)</span><span class="tier-label">តម្លៃ (រៀល)</span></div>
+            <div id="newTiersContainer"></div>
+            <button class="add-tier-btn" onclick="addNewTierRow()">+ បន្ថែមប្រភេទតម្លៃ</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">រូបភាពទំនិញ</label>
+          <div class="img-upload-zone" onclick="document.getElementById('newProductImg').click()">
+            <img class="zone-preview" id="newImgPreview">
+            <div id="zoneContent"><div class="zone-icon">📷</div><div class="zone-text"><p>ចុចដើម្បី Upload រូបភាព</p><p>JPG, PNG • អតិបរមា 5MB</p></div></div>
+          </div>
+          <input type="file" id="newProductImg" accept="image/*" class="hidden-input" onchange="previewNewImg(event)">
+        </div>
+        <button class="save-btn" onclick="addNewProduct()">✅ រក្សាទុកទំនិញ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <h2>🔐 Admin Login</h2>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" id="adminUser" class="form-input" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="adminPass" class="form-input" placeholder="Enter password">
+    </div>
+    <button class="save-btn" onclick="checkLogin()">Login</button>
+    <button class="add-tier-btn" style="margin-top:10px; border:none;" onclick="closeLogin()">Cancel</button>
+  </div>
+</div>
+
+<div id="hiddenInputs"></div>
+
+<script>
+// ===== DATA =====
+let products = [
+  {id:1,name:'Angkor Beer',desc:'ស្រាបៀរក្នុងស្រុក',icon:'🍺',cat:'drink',badge:'ពេញនិយម',img:null,
+   tiers:[{unit:'ដប',price:6000},{unit:'កេស(24ដប)',price:102000}]},
+  {id:2,name:'Tiger Beer',desc:'ស្រាបៀរ Singapore',icon:'🐯',cat:'drink',img:null,
+   tiers:[{unit:'ដប',price:7000},{unit:'កេស(24ដប)',price:120000}]},
+  {id:3,name:'Coca-Cola',desc:'ភេសជ្ជៈ',icon:'🥤',cat:'drink',badge:'sale',img:null,
+   tiers:[{unit:'កំប៉ុង',price:1500},{unit:'ប្រអប់(24)',price:30000}]},
+  {id:4,name:'Red Bull',desc:'Energy Drink',icon:'⚡',cat:'drink',img:null,
+   tiers:[{unit:'កំប៉ុង',price:2000},{unit:'ប្រអប់(24)',price:42000}]},
+  {id:5,name:"Lay's Chips",desc:'អាហារសម្រន់ 60g',icon:'🍟',cat:'snack',badge:'ថ្មី',img:null,
+   tiers:[{unit:'ថង់',price:1500}]},
+  {id:6,name:'Oreo Cookies',desc:'នំប៊ីស្គីត 137g',icon:'🍪',cat:'snack',img:null,
+   tiers:[{unit:'ប្រអប់',price:3500}]},
+  {id:7,name:'Mama Noodles',desc:'មីស្ងោរ 55g',icon:'🍜',cat:'snack',img:null,
+   tiers:[{unit:'ហ្វូង',price:800},{unit:'ប្រអប់(30)',price:18000}]},
+  {id:8,name:'Pringles',desc:'ដំឡូងកំទេច 110g',icon:'🥔',cat:'snack',img:null,
+   tiers:[{unit:'ធុង',price:5500}]},
+  {id:9,name:'Dumex Step 1',desc:'ទឹកដោះគោ 0-6ខែ',icon:'🍼',cat:'milk',badge:'ពេញនិយម',img:null,
+   tiers:[{unit:'ប្រអប់តូច',price:32000},{unit:'ប្រអប់ធំ',price:58000}]},
+  {id:10,name:'NAN Optipro',desc:'ទឹកដោះគោ 0-12ខែ',icon:'👶',cat:'milk',img:null,
+   tiers:[{unit:'ប្រអប់',price:38000}]},
+  {id:11,name:'Lactasoy',desc:'ទឹកសណ្ដែកដី 300ml',icon:'🥛',cat:'milk',img:null,
+   tiers:[{unit:'ដប',price:2500},{unit:'ប្រអប់(24)',price:48000}]},
+  {id:12,name:'Dutch Mill',desc:'ទឹកដោះគោ UHT',icon:'🐄',cat:'milk',img:null,
+   tiers:[{unit:'ដប',price:3000},{unit:'ប្រអប់(24)',price:58000}]},
+  {id:13,name:'Pampers',desc:'ក្រណាត់ក្មេង Size M',icon:'🧷',cat:'baby',badge:'sale',img:null,
+   tiers:[{unit:'ថង់តូច(20ក្រណាត់)',price:12000},{unit:'ថង់ធំ(40ក្រណាត់)',price:25000}]},
+  {id:14,name:'Johnson Baby',desc:'សាប៊ូងូតទឹកកូន',icon:'🛁',cat:'baby',img:null,
+   tiers:[{unit:'តូច',price:5000},{unit:'ធំ',price:8500}]},
+  {id:15,name:'Lifebuoy',desc:'កំចាត់មេរោគ 90g',icon:'🧼',cat:'supply',img:null,
+   tiers:[{unit:'ដំប',price:2500},{unit:'ប្រអប់(6)',price:12000}]},
+  {id:16,name:'Mama Detergent',desc:'ម្សៅលាងចាន 400g',icon:'🧴',cat:'supply',img:null,
+   tiers:[{unit:'ថង់',price:4500},{unit:'ប្រអប់(12)',price:48000}]},
+];
+
+let nextId=17, cart={}, currentCat='all', searchQuery='', newImgData=null;
+const catLabels={drink:'ភេសជ្ជៈ',snack:'អាហារសម្រន់',milk:'ទឹកដោះគោ',baby:'កូនក្មេង',supply:'សម្ភារៈ'};
+const catIcons={drink:'🍺',snack:'🍟',milk:'🍼',baby:'👶',supply:'🧴'};
+
+// ===== AUTHENTICATION =====
+let isAdminAuthenticated = false;
+
+function openAdmin() {
+  if (isAdminAuthenticated) {
+    showAdminPanel();
+  } else {
+    document.getElementById('loginOverlay').classList.add('open');
+  }
+}
+
+function closeLogin() {
+  document.getElementById('loginOverlay').classList.remove('open');
+}
+
+function checkLogin() {
+  const user = document.getElementById('adminUser').value;
+  const pass = document.getElementById('adminPass').value;
+
+  if (user === 'admin' && pass === '0123456789') {
+    isAdminAuthenticated = true;
+    closeLogin();
+    showAdminPanel();
+    showToast('🔓 ចូលក្នុងប្រព័ន្ធជោគជ័យ');
+  } else {
+    showToast('❌ ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវ');
+  }
+}
+
+function showAdminPanel() {
+  renderAdminList();
+  initNewTiers();
+  document.getElementById('adminOverlay').classList.add('open');
+}
+
+// ===== RENDER PRODUCTS =====
+function renderProducts(){
+  const grid=document.getElementById('productsGrid');
+  const f=products.filter(p=>(currentCat==='all'||p.cat===currentCat)&&(p.name.toLowerCase().includes(searchQuery.toLowerCase())||p.desc.includes(searchQuery)));
+  if(!f.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa"><div style="font-size:40px">🔍</div><div style="margin-top:8px">រកមិនឃើញទំនិញ</div></div>';return;}
+  grid.innerHTML=f.map(p=>{
+    const mainTier=p.tiers[0];
+    const extraTiers=p.tiers.slice(1);
+    return `<div class="product-card" onclick="selectProduct(${p.id})">
+      <div class="product-img">
+        ${p.img?`<img src="${p.img}" alt="${p.name}">`:`<span class="emoji-fb">${p.icon}</span>`}
+        ${p.badge==='sale'?'<span class="badge-sale">SALE</span>':p.badge?`<span class="badge-new">${p.badge}</span>`:''}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="price-tiers">
+          <div class="price-tier-row">
+            <span class="tier-unit">${mainTier.unit}</span>
+            <span class="tier-price main">${mainTier.price.toLocaleString()}រ</span>
+          </div>
+          ${extraTiers.map(t=>`<div class="price-tier-row"><span class="tier-unit">${t.unit}</span><span class="tier-price">${t.price.toLocaleString()}រ</span></div>`).join('')}
+        </div>
+        <div class="product-footer">
+          <span style="font-size:10px;color:var(--muted)">${p.tiers.length>1?'ជ្រើសប្រភេទ ▾':''}</span>
+          <button class="add-btn" onclick="event.stopPropagation();selectProduct(${p.id})">+</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCat(cat,el){currentCat=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderProducts();}
+function filterProducts(){searchQuery=document.getElementById('searchInput').value;renderProducts();}
+
+// ===== UNIT SELECTOR =====
+function selectProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(p.tiers.length===1){addToCart(id,0);return;}
+  // show unit modal
+  document.getElementById('unitModalTitle').textContent=`🛍️ ${p.name} – ជ្រើសប្រភេទ`;
+  document.getElementById('unitOptions').innerHTML=p.tiers.map((t,i)=>`
+    <div class="unit-option" onclick="addToCart(${id},${i});closeUnitModal()">
+      <div class="unit-option-left">
+        <div class="unit-option-name">${t.unit}</div>
+        <div class="unit-option-desc">${p.name}</div>
+      </div>
+      <div class="unit-option-price">${t.price.toLocaleString()}រ</div>
+    </div>`).join('');
+  document.getElementById('unitModal').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeUnitModal(){document.getElementById('unitModal').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+// ===== CART =====
+function addToCart(id,tierIdx){
+  const p=products.find(x=>x.id===id);
+  const tier=p.tiers[tierIdx];
+  const key=`${id}-${tierIdx}`;
+  if(!cart[key])cart[key]={...p,tierIdx,unit:tier.unit,price:tier.price,qty:0};
+  cart[key].qty++;
+  updateCartCount();
+  showToast(`✅ ${p.name} (${tier.unit}) បានបន្ថែម`);
+}
+function updateCartCount(){const t=Object.values(cart).reduce((s,i)=>s+i.qty,0);const el=document.getElementById('cartCount');el.textContent=t;el.style.display=t>0?'flex':'none';}
+function openCart(){renderCart();document.getElementById('cartPanel').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeCart(){document.getElementById('cartPanel').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function closeAll(){closeCart();closeUnitModal();}
+
+function renderCart(){
+  const items=Object.values(cart).filter(i=>i.qty>0);
+  const iEl=document.getElementById('cartItems'),fEl=document.getElementById('cartFooter');
+  if(!items.length){iEl.innerHTML=`<div class="empty-cart"><div class="empty-icon">🛒</div><div>រទេះទំនិញនៅទទេ</div></div>`;fEl.innerHTML='';return;}
+  iEl.innerHTML=items.map(i=>`
+    <div class="cart-item">
+      <div class="cart-item-thumb">${i.img?`<img src="${i.img}" alt="${i.name}">`:i.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-unit">${i.unit}</div>
+        <div class="cart-item-price">${(i.price*i.qty).toLocaleString()}រ</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${i.id}-${i.tierIdx}',-1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${i.id}-${i.tierIdx}',1)">+</button>
+      </div>
+    </div>`).join('');
+  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
+  fEl.innerHTML=`<div class="cart-total"><span>សរុបទាំងអស់</span><span class="total-price">${total.toLocaleString()}រ</span></div><button class="order-btn" onclick="placeOrder()">📞 កម្មង់ទំនិញ • 067 785 544</button>`;
+}
+function changeQty(key,delta){if(!cart[key])return;cart[key].qty=Math.max(0,cart[key].qty+delta);if(cart[key].qty===0)delete cart[key];updateCartCount();renderCart();}
+function placeOrder(){
+  const items=Object.values(cart).filter(i=>i.qty>0);
+  if(!items.length)return;
+  const msg=items.map(i=>`${i.name} (${i.unit}) x${i.qty} = ${(i.price*i.qty).toLocaleString()}រ`).join('\n');
+  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const text=encodeURIComponent(`🛒 កម្មង់ពី ផ្ទះចាប់ហួយ អ៊ីចន្ថា\n\n${msg}\n\n💰 សរុប: ${total.toLocaleString()}រ`);
+  window.open(`https://t.me/+855967785544?text=${text}`,'_blank');
+}
+
+function showPage(page){
+  document.getElementById('page-home').classList.toggle('hidden',page!=='home');
+  document.getElementById('page-contact').classList.toggle('hidden',page!=='contact');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`nav-${page}`).classList.add('active');
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// ===== ADMIN =====
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
+function switchTab(tab,el){
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  document.getElementById('tabPrices').style.display=tab==='prices'?'block':'none';
+  document.getElementById('tabAdd').style.display=tab==='add'?'block':'none';
+  if(tab==='prices')renderAdminList();
+}
+
+// expand/collapse price editor per product
+let expandedId=null;
+function renderAdminList(){
+  const list=document.getElementById('adminProductList');
+  list.innerHTML=products.map(p=>`
+    <div class="admin-product-item">
+      <div class="admin-product-top">
+        <div class="admin-thumb" onclick="triggerUp(${p.id})">
+          ${p.img?`<img src="${p.img}" alt="${p.name}">`:p.icon}
+          <div class="upload-hint">📷<br>Upload</div>
+        </div>
+        <div class="admin-product-info">
+          <div class="admin-product-name">${p.name}${p.img?'<span class="has-img-dot"></span>':''}</div>
+          <div class="admin-product-cat">${catLabels[p.cat]||p.cat} • ${p.tiers.length} ប្រភេទតម្លៃ</div>
+        </div>
+        <div class="admin-actions">
+          <label class="btn-sm" onclick="triggerUp(${p.id})">📷</label>
+          <button class="btn-sm primary" onclick="togglePriceEditor(${p.id})">✏️ កែ</button>
+          <button class="btn-sm danger" onclick="deleteProduct(${p.id})">🗑️</button>
+        </div>
+      </div>
+      <div id="editor-${p.id}" style="display:${expandedId===p.id?'block':'none'}">
+        ${renderPriceEditor(p)}
+      </div>
+    </div>`).join('');
+  // hidden file inputs
+  document.getElementById('hiddenInputs').innerHTML=products.map(p=>`<input type="file" id="img-${p.id}" accept="image/*" class="hidden-input" onchange="handleUpload(event,${p.id})">`).join('');
+}
+
+function renderPriceEditor(p){
+  return `<div class="price-tiers-editor">
+    <div class="tier-labels"><span class="tier-label">ប្រភេទ</span><span class="tier-label">តម្លៃ (រៀល)</span></div>
+    <div id="tiers-${p.id}">
+      ${p.tiers.map((t,i)=>`
+        <div class="tier-editor-row" id="tier-row-${p.id}-${i}">
+          <input class="tier-input-unit" value="${t.unit}" id="unit-${p.id}-${i}" placeholder="ដប/កេស...">
+          <input class="tier-input-price" type="number" value="${t.price}" id="price-${p.id}-${i}" placeholder="6000">
+          <button class="tier-del-btn" onclick="deleteTierRow(${p.id},${i})">✕</button>
+        </div>`).join('')}
+    </div>
+    <button class="add-tier-btn" onclick="addTierRow(${p.id})">+ បន្ថែមប្រភេទ</button>
+    <button class="save-tier-btn" onclick="saveTiers(${p.id})">💾 រក្សាទុក</button>
+  </div>`;
+}
+
+function togglePriceEditor(id){
+  expandedId=(expandedId===id)?null:id;
+  renderAdminList();
+  if(expandedId){
+    setTimeout(()=>{const el=document.getElementById(`editor-${id}`);if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+  }
+}
+
+function addTierRow(pid){
+  const p=products.find(x=>x.id===pid);
+  p.tiers.push({unit:'',price:0});
+  expandedId=pid;
+  renderAdminList();
+}
+
+function deleteTierRow(pid,idx){
+  const p=products.find(x=>x.id===pid);
+  if(p.tiers.length<=1){showToast('❌ ត្រូវមានតម្លៃយ៉ាងហោចណាស់ 1!');return;}
+  p.tiers.splice(idx,1);
+  expandedId=pid;
+  renderAdminList();
+}
+
+function saveTiers(pid){
+  const p=products.find(x=>x.id===pid);
+  const newTiers=[];
+  let valid=true;
+  p.tiers.forEach((_,i)=>{
+    const u=document.getElementById(`unit-${pid}-${i}`).value.trim();
+    const pr=parseInt(document.getElementById(`price-${pid}-${i}`).value);
+    if(!u||!pr||pr<=0){valid=false;return;}
+    newTiers.push({unit:u,price:pr});
+  });
+  if(!valid){showToast('❌ សូមបំពេញឈ្មោះ និងតម្លៃឱ្យពេញ!');return;}
+  p.tiers=newTiers;
+  // update cart entries
+  Object.keys(cart).forEach(k=>{
+    if(k.startsWith(`${pid}-`)){const ti=parseInt(k.split('-')[1]);if(p.tiers[ti]){cart[k].price=p.tiers[ti].price;cart[k].unit=p.tiers[ti].unit;}}
+  });
+  expandedId=null;
+  renderAdminList();
+  renderProducts();
+  showToast(`✅ តម្លៃ "${p.name}" បានរក្សាទុក!`);
+}
+
+function deleteProduct(id){
+  if(!confirm('លុបទំនិញនេះ?'))return;
+  products=products.filter(p=>p.id!==id);
+  Object.keys(cart).forEach(k=>{if(k.startsWith(`${id}-`))delete cart[k];});
+  updateCartCount();
+  renderAdminList();
+  renderProducts();
+  showToast('🗑️ បានលុបទំនិញ');
+}
+
+function triggerUp(id){const el=document.getElementById(`img-${id}`);if(el)el.click();}
+function handleUpload(event,id){
+  const file=event.target.files[0];if(!file)return;
+  if(file.size>5*1024*1024){showToast('❌ រូបភាពធំពេក!');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const p=products.find(x=>x.id===id);if(!p)return;
+    p.img=e.target.result;
+    Object.keys(cart).forEach(k=>{if(k.startsWith(`${id}-`))cart[k].img=e.target.result;});
+    renderAdminList();renderProducts();showToast(`✅ រូបភាព "${p.name}" បានដាក់!`);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===== ADD NEW PRODUCT =====
+let newTierCount=1;
+function initNewTiers(){
+  newTierCount=1;
+  document.getElementById('newTiersContainer').innerHTML=makeTierRow(0);
+}
+function makeTierRow(i){
+  return `<div class="tier-editor-row" id="new-tier-row-${i}">
+    <input class="tier-input-unit" id="new-unit-${i}" placeholder="ដប/កេស/ថង់...">
+    <input class="tier-input-price" type="number" id="new-price-${i}" placeholder="6000">
+    ${i>0?`<button class="tier-del-btn" onclick="removeNewTierRow(${i})">✕</button>`:'<div style="width:28px"></div>'}
+  </div>`;
+}
+function addNewTierRow(){
+  const c=document.getElementById('newTiersContainer');
+  c.insertAdjacentHTML('beforeend',makeTierRow(newTierCount));
+  newTierCount++;
+}
+function removeNewTierRow(i){const el=document.getElementById(`new-tier-row-${i}`);if(el)el.remove();}
+
+function previewNewImg(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{newImgData=e.target.result;const p=document.getElementById('newImgPreview');const c=document.getElementById('zoneContent');p.src=newImgData;p.style.display='block';c.style.display='none';};
+  reader.readAsDataURL(file);
+}
+
+function addNewProduct(){
+  const name=document.getElementById('newName').value.trim();
+  const desc=document.getElementById('newDesc').value.trim();
+  const cat=document.getElementById('newCat').value;
+  const badge=document.getElementById('newBadge').value;
+  if(!name){showToast('❌ សូមដាក់ឈ្មោះទំនិញ!');return;}
+  // collect tiers
+  const tiers=[];
+  for(let i=0;i<newTierCount;i++){
+    const uEl=document.getElementById(`new-unit-${i}`);
+    const pEl=document.getElementById(`new-price-${i}`);
+    if(!uEl||!pEl)continue;
+    const u=uEl.value.trim();const pr=parseInt(pEl.value);
+    if(u&&pr>0)tiers.push({unit:u,price:pr});
+  }
+  if(!tiers.length){showToast('❌ សូមដាក់តម្លៃយ៉ាងហោចណាស់ 1!');return;}
+  products.push({id:nextId++,name,desc:desc||name,cat,icon:catIcons[cat]||'🛒',badge:badge||undefined,img:newImgData,tiers});
+  renderProducts();
+  document.getElementById('newName').value='';
+  document.getElementById('newDesc').value='';
+  document.getElementById('newBadge').value='';
+  initNewTiers();
+  document.getElementById('newImgPreview').style.display='none';
+  document.getElementById('zoneContent').style.display='block';
+  newImgData=null;
+  showToast(`✅ បានបន្ថែម "${name}" ជោគជ័យ!`);
+  closeAdmin();
+}
+
+renderProducts();
+initNewTiers();
+</script>
+</body>
+</html>
