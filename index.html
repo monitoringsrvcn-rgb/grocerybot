@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ផ្ទះចាប់ហួយ អ៊ីចន្ថា</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #e8390e;
+    --primary-dark: #c22d0a;
+    --accent: #ffc107;
+    --bg: #fff8f5;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #888;
+    --border: #f0e0d8;
+    --shadow: 0 4px 20px rgba(232,57,14,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Kantumruy Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #ff6b35 100%);
+    color: white;
+    padding: 20px 16px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    position: relative; z-index: 1;
+  }
+  .logo {
+    width: 52px; height: 52px;
+    background: white;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .shop-name { font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .shop-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+  .header-info {
+    display: flex; gap: 12px;
+    position: relative; z-index: 1;
+    margin-top: 6px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    padding: 14px 16px 4px;
+  }
+  .search-box {
+    display: flex; align-items: center;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    gap: 8px;
+    box-shadow: var(--shadow);
+  }
+  .search-box input {
+    border: none; outline: none;
+    font-family: inherit; font-size: 14px;
+    flex: 1; background: transparent;
+    color: var(--text);
+  }
+  .search-icon { color: var(--primary); font-size: 16px; }
+
+  /* CATEGORIES */
+  .section-title {
+    font-size: 15px; font-weight: 700;
+    padding: 14px 16px 8px;
+    color: var(--text);
+  }
+  .categories {
+    display: flex; gap: 8px;
+    padding: 0 16px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .categories::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px;
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    min-width: 68px;
+  }
+  .cat-btn .cat-icon { font-size: 22px; }
+  .cat-btn.active, .cat-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #fff0ec;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(232,57,14,0.15);
+  }
+
+  /* PROMO BANNER */
+  .promo-banner {
+    margin: 12px 16px;
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(255,193,7,0.3);
+  }
+  .promo-text { color: #1a1a1a; }
+  .promo-text h3 { font-size: 15px; font-weight: 700; }
+  .promo-text p { font-size: 12px; margin-top: 2px; opacity: 0.8; }
+  .promo-emoji { font-size: 36px; }
+
+  /* PRODUCTS GRID */
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1.5px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(232,57,14,0.15); }
+  .product-img {
+    width: 100%; height: 110px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    background: linear-gradient(135deg, #fff0ec, #ffe8e0);
+    position: relative;
+  }
+  .badge-new {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--primary);
+    color: white; font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 20px;
+  }
+  .badge-sale {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--accent);
+    color: #1a1a1a; font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 20px;
+  }
+  .product-info { padding: 10px 12px 12px; }
+  .product-name { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+  .product-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .add-btn {
+    width: 28px; height: 28px;
+    background: var(--primary);
+    color: white; border: none; border-radius: 8px;
+    font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+  }
+  .add-btn:hover { background: var(--primary-dark); transform: scale(1.1); }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1.5px solid var(--border);
+    display: flex;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    z-index: 100;
+  }
+  .nav-btn {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 10px 0;
+    cursor: pointer; border: none; background: transparent;
+    font-family: inherit; font-size: 10px;
+    color: var(--text-muted); gap: 3px;
+    transition: color 0.2s;
+  }
+  .nav-btn .nav-icon { font-size: 20px; }
+  .nav-btn.active { color: var(--primary); }
+  .cart-wrap { position: relative; display: inline-block; }
+  .cart-count {
+    position: absolute; top: -6px; right: -8px;
+    background: var(--primary); color: white;
+    font-size: 9px; font-weight: 700;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* CART PANEL */
+  .cart-panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+    z-index: 200;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .cart-panel.open { transform: translateY(0); }
+  .cart-handle {
+    width: 40px; height: 4px;
+    background: #ddd; border-radius: 2px;
+    margin: 12px auto 0;
+  }
+  .cart-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-header h2 { font-size: 16px; font-weight: 700; }
+  .close-btn {
+    background: #f5f5f5; border: none; border-radius: 50%;
+    width: 30px; height: 30px; font-size: 16px; cursor: pointer;
+  }
+  .cart-items { padding: 12px 20px; }
+  .cart-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid #f5f5f5;
+  }
+  .cart-item-icon { font-size: 32px; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 13px; font-weight: 600; }
+  .cart-item-price { font-size: 12px; color: var(--primary); margin-top: 2px; }
+  .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+  .qty-btn {
+    width: 26px; height: 26px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: white;
+    font-size: 15px; cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-num { font-size: 14px; font-weight: 700; min-width: 20px; text-align: center; }
+  .cart-footer { padding: 16px 20px 30px; }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .cart-total span { font-size: 15px; font-weight: 700; }
+  .cart-total .total-price { font-size: 18px; color: var(--primary); }
+  .order-btn {
+    width: 100%; background: var(--primary); color: white;
+    border: none; border-radius: 14px; padding: 14px;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .order-btn:hover { background: var(--primary-dark); }
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 150; display: none;
+  }
+  .overlay.show { display: block; }
+  .empty-cart { text-align: center; padding: 30px; color: var(--text-muted); }
+  .empty-cart .empty-icon { font-size: 48px; margin-bottom: 10px; }
+
+  /* CONTACT PAGE */
+  .contact-page { padding: 16px; display: none; }
+  .contact-card {
+    background: white; border-radius: 16px; padding: 20px;
+    box-shadow: var(--shadow); border: 1.5px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .contact-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--primary); }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid #f5f5f5;
+  }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-item-icon { font-size: 24px; }
+  .contact-item-info { flex: 1; }
+  .contact-item-label { font-size: 11px; color: var(--text-muted); }
+  .contact-item-value { font-size: 14px; font-weight: 600; margin-top: 1px; }
+  .call-btn {
+    background: var(--primary); color: white;
+    border: none; border-radius: 10px; padding: 8px 14px;
+    font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+
+  /* PAGE TOGGLE */
+  .page { display: block; }
+  .page.hidden { display: none; }
+
+  /* Toast */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+    background: #1a1a1a; color: white;
+    padding: 10px 20px; border-radius: 20px; font-size: 13px;
+    z-index: 999; transition: transform 0.3s;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">🏪</div>
+    <div>
+      <div class="shop-name">ផ្ទះចាប់ហួយ អ៊ីចន្ថា</div>
+      <div class="shop-sub">Mini Mart • គ្រប់មុខទំនិញ</div>
+    </div>
+  </div>
+  <div class="header-info">
+    <div class="badge">⏰ 6AM–10PM</div>
+    <div class="badge">📞 067 785 544</div>
+    <div class="badge">✅ បើករៀងរាល់ថ្ងៃ</div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div class="page" id="page-home">
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="ស្វែងរកទំនិញ..." id="searchInput" oninput="filterProducts()">
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section-title">ប្រភេទទំនិញ</div>
+  <div class="categories">
+    <button class="cat-btn active" onclick="filterCat('all', this)">
+      <span class="cat-icon">🛒</span>ទាំងអស់
+    </button>
+    <button class="cat-btn" onclick="filterCat('drink', this)">
+      <span class="cat-icon">🍺</span>ភេសជ្ជៈ
+    </button>
+    <button class="cat-btn" onclick="filterCat('snack', this)">
+      <span class="cat-icon">🍟</span>សម្រន់
+    </button>
+    <button class="cat-btn" onclick="filterCat('milk', this)">
+      <span class="cat-icon">🍼</span>ទឹកដោះគោ
+    </button>
+    <button class="cat-btn" onclick="filterCat('baby', this)">
+      <span class="cat-icon">👶</span>កូនក្មេង
+    </button>
+    <button class="cat-btn" onclick="filterCat('supply', this)">
+      <span class="cat-icon">🧴</span>សម្ភារៈ
+    </button>
+  </div>
+
+  <!-- PROMO -->
+  <div class="promo-banner">
+    <div class="promo-text">
+      <h3>⚡ Flash Sale ថ្ងៃនេះ!</h3>
+      <p>បញ្ចុះតម្លៃ 10-20% លើទំនិញជ្រើស</p>
+    </div>
+    <div class="promo-emoji">🎉</div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="section-title">ទំនិញទាំងអស់</div>
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page hidden" id="page-contact">
+  <div class="contact-page" style="display:block">
+    <div class="contact-card">
+      <h3>📞 ទំនាក់ទំនងហាង</h3>
+      <div class="contact-item">
+        <div class="contact-item-icon">📱</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">លេខទូរស័ព្ទ</div>
+          <div class="contact-item-value">067 785 544</div>
+        </div>
+        <button class="call-btn" onclick="window.location='tel:067785544'">ទូរស័ព្ទ</button>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">⏰</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">ម៉ោងបម្រើ</div>
+          <div class="contact-item-value">6:00AM – 10:00PM រៀងរាល់ថ្ងៃ</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📦</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">ការដឹកជញ្ជូន</div>
+          <div class="contact-item-value">ដឹកដល់ផ្ទះ • កម្មង់តាម Telegram</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <h3>💰 វិធីទូទាត់</h3>
+      <div class="contact-item">
+        <div class="contact-item-icon">🏦</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">ធនាគារ</div>
+          <div class="contact-item-value">ABA / ACLEDA</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📲</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">Mobile Payment</div>
+          <div class="contact-item-value">Wing / TrueMoney / Pi Pay</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💵</div>
+        <div class="contact-item-info">
+          <div class="contact-item-label">សាច់ប្រាក់</div>
+          <div class="contact-item-value">Cash on Delivery (COD)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+    <span class="nav-icon">🏠</span>ទំព័រដើម
+  </button>
+  <button class="nav-btn" id="nav-cart" onclick="openCart()">
+    <span class="cart-wrap">
+      <span class="nav-icon">🛒</span>
+      <span class="cart-count" id="cartCount" style="display:none">0</span>
+    </span>
+    រទេះ
+  </button>
+  <button class="nav-btn" id="nav-contact" onclick="showPage('contact')">
+    <span class="nav-icon">📞</span>ទំនាក់ទំនង
+  </button>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-handle"></div>
+  <div class="cart-header">
+    <h2>🛒 រទេះទំនិញ</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+  { id:1, name:'Angkor Beer', desc:'ស្រាបៀរក្នុងស្រុក', price:2500, icon:'🍺', cat:'drink', badge:'ពេញនិយម' },
+  { id:2, name:'Tiger Beer', desc:'ស្រាបៀរ Singapore', price:3000, icon:'🐯', cat:'drink' },
+  { id:3, name:'Coca-Cola', desc:'ភេសជ្ជៈ 330ml', price:1500, icon:'🥤', cat:'drink', badge:'sale' },
+  { id:4, name:'Red Bull', desc:'Energy Drink 250ml', price:2000, icon:'⚡', cat:'drink' },
+  { id:5, name:'Lay\'s Chips', desc:'អាហារសម្រន់ 60g', price:1500, icon:'🍟', cat:'snack', badge:'ថ្មី' },
+  { id:6, name:'Oreo Cookies', desc:'នំប៊ីស្គីត 137g', price:3500, icon:'🍪', cat:'snack' },
+  { id:7, name:'Mama Noodles', desc:'មីស្ងោរ 55g', price:800, icon:'🍜', cat:'snack' },
+  { id:8, name:'Pringles', desc:'ដំឡូងកំទេច 110g', price:5500, icon:'🥔', cat:'snack' },
+  { id:9, name:'Dumex Step 1', desc:'ទឹកដោះគោ 0-6ខែ', price:32000, icon:'🍼', cat:'milk', badge:'ពេញនិយម' },
+  { id:10, name:'NAN Optipro', desc:'ទឹកដោះគោ 0-12ខែ', price:38000, icon:'👶', cat:'milk' },
+  { id:11, name:'Lactasoy', desc:'ទឹកសណ្ដែកដី 300ml', price:2500, icon:'🥛', cat:'milk' },
+  { id:12, name:'Dutch Mill', desc:'ទឹកដោះគោ UHT', price:3000, icon:'🐄', cat:'milk' },
+  { id:13, name:'Pampers', desc:'ក្រណាត់ក្មេង Size M', price:25000, icon:'🧷', cat:'baby', badge:'sale' },
+  { id:14, name:'Johnson Baby', desc:'សាប៊ូងូតទឹកកូន', price:8500, icon:'🛁', cat:'baby' },
+  { id:15, name:'សាប៊ូ Lifebuoy', desc:'កំចាត់មេរោគ 90g', price:2500, icon:'🧼', cat:'supply' },
+  { id:16, name:'Mama Detergent', desc:'ម្សៅលាងចាន 400g', price:4500, icon:'🧴', cat:'supply' },
+];
+
+let cart = {};
+let currentCat = 'all';
+let searchQuery = '';
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  let filtered = products.filter(p => {
+    const matchCat = currentCat === 'all' || p.cat === currentCat;
+    const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.includes(searchQuery);
+    return matchCat && matchSearch;
+  });
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa"><div style="font-size:40px">🔍</div><div style="margin-top:8px">រកមិនឃើញទំនិញ</div></div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" onclick="addToCart(${p.id})">
+      <div class="product-img">
+        ${p.icon}
+        ${p.badge === 'sale' ? `<span class="badge-sale">SALE</span>` : p.badge ? `<span class="badge-new">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">${p.price.toLocaleString()}រ</div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderProducts();
+}
+
+function filterProducts() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderProducts();
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if (!cart[id]) cart[id] = { ...p, qty: 0 };
+  cart[id].qty++;
+  updateCartCount();
+  showToast(`✅ បានបន្ថែម ${p.name}`);
+}
+
+function updateCartCount() {
+  const total = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+  const el = document.getElementById('cartCount');
+  el.textContent = total;
+  el.style.display = total > 0 ? 'flex' : 'none';
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cartPanel').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+
+function closeCart() {
+  document.getElementById('cartPanel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function renderCart() {
+  const items = Object.values(cart).filter(i => i.qty > 0);
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  if (items.length === 0) {
+    itemsEl.innerHTML = `<div class="empty-cart"><div class="empty-icon">🛒</div><div>រទេះទំនិញនៅទទេ</div></div>`;
+    footerEl.innerHTML = '';
+    return;
+  }
+  itemsEl.innerHTML = items.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${i.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">${(i.price * i.qty).toLocaleString()}រ</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  footerEl.innerHTML = `
+    <div class="cart-total">
+      <span>សរុបទាំងអស់</span>
+      <span class="total-price">${total.toLocaleString()}រ</span>
+    </div>
+    <button class="order-btn" onclick="placeOrder()">📞 កម្មង់ទំនិញ • 067 785 544</button>
+  `;
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty = Math.max(0, cart[id].qty + delta);
+  if (cart[id].qty === 0) delete cart[id];
+  updateCartCount();
+  renderCart();
+}
+
+function placeOrder() {
+  const items = Object.values(cart).filter(i => i.qty > 0);
+  if (items.length === 0) return;
+  const msg = items.map(i => `${i.name} x${i.qty} = ${(i.price*i.qty).toLocaleString()}រ`).join('\n');
+  const total = items.reduce((s,i) => s+i.price*i.qty, 0);
+  const text = encodeURIComponent(`🛒 កម្មង់ពី ផ្ទះចាប់ហួយ អ៊ីចន្ថា\n\n${msg}\n\n💰 សរុប: ${total.toLocaleString()}រ`);
+  window.open(`https://t.me/+855967785544?text=${text}`, '_blank');
+}
+
+function showPage(page) {
+  document.getElementById('page-home').classList.toggle('hidden', page !== 'home');
+  document.getElementById('page-contact').classList.toggle('hidden', page !== 'contact');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`nav-${page}`).classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+renderProducts();
+</script>
+</body>
+</html>
